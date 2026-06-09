@@ -1,0 +1,40 @@
+on: push
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v6
+      - name: Cleanup
+        run: |
+          rm *.md
+          rm LICENSE
+
+      - name: Find release files
+        id: release-files
+        run: |
+          {
+            echo "files<<EOF"
+
+            find . \
+              -maxdepth 1 \
+              -type f \
+              -printf '%P\n' \
+              | sort
+
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Files being released:"
+          find . \
+            -maxdepth 1 \
+            -type f \
+            -printf '%P\n' \
+            | sort
+
+      # https://github.com/marketplace/actions/gh-release
+      - uses: softprops/action-gh-release@v3
+        with:
+          files: ${{ steps.release-files.outputs.files }}
