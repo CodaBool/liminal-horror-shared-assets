@@ -10,7 +10,7 @@ jobs:
       - name: Cleanup
         run: |
           rm *.md
-          rm LICENSE
+          rm license
 
       - name: Find release files
         id: release-files
