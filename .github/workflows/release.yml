@@ -1,6 +1,9 @@
-on: push
 permissions:
   contents: write
+on:
+  push:
+    tags:
+      - "*" # run only against tags
 jobs:
   release:
     runs-on: ubuntu-latest
